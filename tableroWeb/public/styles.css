@@ -1,0 +1,55 @@
+#board {
+  display: flex;
+  flex-wrap: wrap;
+  width: 500px;
+  height: 500px;
+  border: 2px solid black;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.car {
+  width: 50px;
+  height: 50px;
+}
+
+.apple {
+  width: 30px;
+  height: 30px;
+}
+
+.fire {
+  width: 30px;
+  height: 30px;
+}
+
+#score-box {
+  border: 2px solid black;
+  padding: 0px 15px;
+  width: fit-content;
+  margin: 0 auto 20px auto;
+  background-color: #ccc;
+  border-radius: 8px;
+}
+
+#score-counter {
+  font-size: 3em;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+#pasos-counter {
+  font-size: 1.5em;
+  margin-top: 10px;
+  text-align: left;
+  font-weight: lighter;
+}
