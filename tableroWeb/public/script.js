@@ -7,13 +7,13 @@ import { cerrarVictoria } from "./funciones/victoria.js";
 import { updateScore } from "./funciones/score.js";
 
 const socket = new WebSocket(`ws://${location.host}`);
-
+// Si el mensaje tiene un nuevo score, se actualiza
 socket.addEventListener("message", (event) => {
   const data = JSON.parse(event.data);
   if (data.tipo === "score" && typeof data.puntos === "number") {
     console.log(data)
     globales.score = data.puntos;
-    updateScore(); // Esta función es la que actualiza el DOM
+    updateScore(); // Actualizo el score de la pantalla
   }
 });
 
