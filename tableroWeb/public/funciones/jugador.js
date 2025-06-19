@@ -50,13 +50,14 @@ export function startJugador(){
             socket.send(JSON.stringify({ tipo: "addScore", puntos: 10 })); // lo mando al server
             } 
         }
+        // Actualizo el score de globales con los puntos de la data de los clientes
         if (data.tipo === "score" && typeof data.puntos === "number") {
         globales.score = data.puntos;
         updateScore();
         }
 
         if (data.tipo === "gameOver") {
-        // Ya reseteado en servidor, solo actualizamos UI
+        // Ya reseteado en servidor, solo actualizamos globales
         globales.score = 0;
         updateScore();
         }
