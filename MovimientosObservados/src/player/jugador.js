@@ -30,7 +30,6 @@ class Jugador {
       t.actualizar({ posX: this.x, posY: this.y, cantMovims: this.movs })
     );
   }
-
   avanzar() {
     if (this.x == Jugador.COLUMNAS - 1) this.x = 0;
     else this.x++;

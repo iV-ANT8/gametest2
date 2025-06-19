@@ -10,7 +10,14 @@
       <div id="score-counter">Score: 0</div>
     </div>
     <div id="board"></div>
-    <script src="script.js"></script>
     <div id="pasos-counter">Movimientos: 0</div>
+    <div id="victoria" class="victory hidden">
+      <div class="victory-content">
+        <h2>¡VICTORIA!</h2>
+        <p>¡Llegaste a los 500 puntos!</p>
+        <button onclick="cerrarVictoria()">Cerrar y Continuar</button>
+      </div>
+    </div>
+    <script type="module" src="script.js"></script>
   </body>
 </html>

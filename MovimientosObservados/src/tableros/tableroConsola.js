@@ -1,6 +1,40 @@
+const score = require("../../../scoreTotal.js");
+const { enviarAClientes } = require("../../../tableroWeb/server.js");
+
 class TableroConsola {
   static FILAS = 10;
   static COLUMNAS = 10;
+
+  constructor() {
+    this.rxConsola = null;
+    this.ryConsola = null;
+    this.manzanaVisible = false;
+    this.intervaloManzana = null;
+    this.dissapearTime = null;
+    this.score = score;
+    this.enviarAClientes = enviarAClientes;
+    this.startIntervaloManzana();
+  }
+
+  startIntervaloManzana() {
+    this.intervaloManzana = setInterval(() => {
+      if (!this.manzanaVisible) {
+        this.spawnManzana();
+        this.manzanaVisible = true;
+        this.manzanaAgarrada = false;
+        this.dissapearTime = setTimeout(() => {
+          this.rxConsola = null;
+          this.ryConsola = null;
+          this.manzanaVisible = false;
+        }, 5000);
+      }
+    }, 5000);
+  }
+
+  spawnManzana() {
+    this.rxConsola = Math.floor(Math.random() * TableroConsola.COLUMNAS);
+    this.ryConsola = Math.floor(Math.random() * TableroConsola.FILAS);
+  }
 
   dibujar(x, y, pasos) {
     console.clear(); // Borrar Tablero Anterior
@@ -27,6 +61,8 @@ class TableroConsola {
         // Cambio importante aquí: comparar columna con x y fila con y
         if (columna === x && fila === y) {
           tablero += pasos.toString().padStart(3, " ");
+        } else if (this.manzanaVisible && columna === this.rxConsola && fila === this.ryConsola) {
+          tablero += " 🍎 ";
         } else {
           tablero += "   ";
         }
@@ -55,12 +91,23 @@ class TableroConsola {
   }
 
   actualizar(estadoANotificar) {
+    const { posX, posY } = estadoANotificar;
+    // Si se recoge una manzana...
+    if (this.manzanaVisible && !this.manzanaAgarrada && posX === this.rxConsola && posY === this.ryConsola) {
+      this.manzanaAgarrada = true;
+      this.manzanaVisible = false;
+      clearTimeout(this.dissapearTime);
+
+      this.score.addScore(10);
+      this.enviarAClientes({tipo:"score", puntos: score.getScore()});
+      this.rxConsola = null;
+      this.ryConsola = null;
+    }
     this.dibujar(
-      estadoANotificar.posX,
-      estadoANotificar.posY,
+      posX,
+      posY,
       estadoANotificar.cantMovims
     );
   }
 }
-
 module.exports = new TableroConsola();
