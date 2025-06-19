@@ -16,8 +16,13 @@ class TableroConsola {
     this.startIntervaloManzana();
   }
 
+    spawnManzana() {
+    this.rxConsola = Math.floor(Math.random() * TableroConsola.COLUMNAS);
+    this.ryConsola = Math.floor(Math.random() * TableroConsola.FILAS);
+  }
+
   startIntervaloManzana() {
-    this.intervaloManzana = setInterval(() => {
+    this.intervaloManzana = setInterval(() => { // Aparición y eliminación de la manzana cada 5 segundos
       if (!this.manzanaVisible) {
         this.spawnManzana();
         this.manzanaVisible = true;
@@ -29,11 +34,6 @@ class TableroConsola {
         }, 5000);
       }
     }, 5000);
-  }
-
-  spawnManzana() {
-    this.rxConsola = Math.floor(Math.random() * TableroConsola.COLUMNAS);
-    this.ryConsola = Math.floor(Math.random() * TableroConsola.FILAS);
   }
 
   dibujar(x, y, pasos) {
@@ -61,7 +61,7 @@ class TableroConsola {
         // Cambio importante aquí: comparar columna con x y fila con y
         if (columna === x && fila === y) {
           tablero += pasos.toString().padStart(3, " ");
-        } else if (this.manzanaVisible && columna === this.rxConsola && fila === this.ryConsola) {
+        } else if (this.manzanaVisible && columna === this.rxConsola && fila === this.ryConsola) { // insertar manzana
           tablero += " 🍎 ";
         } else {
           tablero += "   ";
@@ -97,7 +97,7 @@ class TableroConsola {
       this.manzanaAgarrada = true;
       this.manzanaVisible = false;
       clearTimeout(this.dissapearTime);
-
+    // Se agregan los puntos.
       this.score.addScore(10);
       this.enviarAClientes({tipo:"score", puntos: score.getScore()});
       this.rxConsola = null;
