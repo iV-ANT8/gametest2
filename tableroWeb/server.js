@@ -14,7 +14,8 @@ wss.on("connection", (ws) => {
   ws.on("message", (message) => {
     try {
       const data = JSON.parse(message);
-
+      // Según el tipo de dato reunido, se actualiza el score para cada cliente
+      // FUNCION UBICADA AL FINAL DEL ARCHIVO
       if (data.tipo === "addScore" && typeof data.puntos === "number") {
         score.addScore(data.puntos);
         enviarAClientes({ tipo: "score", puntos: score.getScore() });
@@ -24,7 +25,7 @@ wss.on("connection", (ws) => {
         enviarAClientes({ tipo: "gameOver" });
       }
     } catch (error) {
-      console.error("Error al procesar mensaje:", error);
+      console.error("Error con el mensaje:", error);
     }
   });
   ws.on("close", () => {
@@ -32,7 +33,7 @@ wss.on("connection", (ws) => {
   });
 });
 
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname,"public"))); // se accede al public dentro de la carpeta para cargar la web
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -56,6 +57,7 @@ app.post("/move", (req, res) => {
   }
 });
 
+// Envía los datos a los clientes (tipo y score)
 function enviarAClientes(data) {
   const str = JSON.stringify(data);
   clients.forEach((ws) => {
@@ -65,12 +67,12 @@ function enviarAClientes(data) {
   });
 }
 
+// Servidor iniciado solo si se ejecuta directamente (por priv) y no como módulo
 if (require.main === module) {
   const PORT = 3000;
   server.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
   });
 }
-
 
 module.exports = { app, server, wss, enviarAClientes };
